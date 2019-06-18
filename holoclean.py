@@ -290,6 +290,9 @@ class Session:
                                               src_col=src_col)
         logging.info(status)
         logging.debug('Time to load dataset: %.2f secs', load_time)
+    
+    def convert_out_range(self, attrs):
+        self.ds.out_range_to_nan(attrs)
 
     def load_dcs(self, fpath):
         """

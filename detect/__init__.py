@@ -3,6 +3,9 @@ from .detector import Detector
 from .nulldetector import NullDetector
 from .violationdetector import ViolationDetector
 from .errorloaderdetector import ErrorsLoaderDetector
+from .attrlimits import AttrLimits
 
 __all__ = ['DetectEngine', 'Detector', 'NullDetector', 
-            'ViolationDetector', 'ErrorsLoaderDetector']
+            'ViolationDetector', 'ErrorsLoaderDetector', 'AttrLimits']
+
+

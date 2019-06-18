@@ -4,6 +4,7 @@ import os
 import time
 
 import pandas as pd
+import numpy as np
 
 from .dbengine import DBengine
 from .table import Table, Source
@@ -124,6 +125,16 @@ class Dataset:
         toc = time.clock()
         load_time = toc - tic
         return status, load_time
+
+    def out_range_to_nan(self, attr_limits):
+        df_copy = self.raw_data.df.copy(deep = True)
+        for attr in attr_limits:
+            name = attr.name
+            min_val = attr.min
+            max_val = attr.max
+            df_copy[name].replace('_nan_', np.NaN, inplace = True)
+            index_values = df_copy[(df_copy[name].astype(float) < min_val) | (df_copy[name].astype(float) >= max_val)].index.values
+            self.raw_data.df.loc[index_values, name] = NULL_REPR
 
     def set_constraints(self, constraints):
         self.constraints = constraints

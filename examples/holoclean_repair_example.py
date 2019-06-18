@@ -1,10 +1,21 @@
 import sys
 sys.path.append('../')
 import holoclean
-from detect import NullDetector, ViolationDetector
+from detect import NullDetector, ViolationDetector, AttrLimits
 from repair.featurize import *
 
+import time
 
+num = 4
+ls = [
+    ["hospital", "hospital/hospital.csv", "hospital/hospital_constraints.txt", "hospital/hospital_clean.csv", r'C:\Users\t-armen\Documents\Python Scripts\hospital\output.csv'],
+    ["nyc", "dirty_data.csv", "taxi_constraints.txt", "real_trips.csv", r'C:\Users\t-armen\Documents\Python Scripts\nyc\output_trips.csv'],
+    ["seattle911", "dirty_data_911.csv", "911_constraints.txt", "real_911.csv", r'C:\Users\t-armen\Documents\Python Scripts\datasets\output.csv'],
+    ["appcall", "app_train.csv", "app_constraints.txt", "app_clean.csv", r'C:\Users\t-armen\Documents\Python Scripts\appcall\output.csv'],
+    ["androidsdk","android_train.csv", "android_constraints.txt", "android_clean.csv", r'C:\Users\t-armen\Documents\Python Scripts\android\output.csv']
+]
+
+start = time.time()
 # 1. Setup a HoloClean session.
 hc = holoclean.HoloClean(
     db_name='holo',
@@ -26,6 +37,10 @@ hc = holoclean.HoloClean(
     print_fw=True
 ).session
 
+# Flag out of range values as NaNs
+limits = [AttrLimits("Latitude",47,48), AttrLimits("Longitude", -123, -122)]
+hc.convert_out_range(limits)
+
 # 2. Load training data and denial constraints.
 hc.load_data('hospital', '../testdata/hospital.csv')
 hc.load_dcs('../testdata/hospital_constraints.txt')
@@ -45,6 +60,9 @@ featurizers = [
 ]
 
 hc.repair_errors(featurizers)
+
+end = time.time()
+print("Time to run HoloClean: " + str(end - start))
 
 # 5. Evaluate the correctness of the results.
 hc.evaluate(fpath='../testdata/hospital_clean.csv',
