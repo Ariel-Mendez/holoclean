@@ -3,7 +3,6 @@ sys.path.append('../')
 import holoclean
 from detect import NullDetector, ViolationDetector, AttrLimits
 from repair.featurize import *
-
 import time
 
 num = 4
@@ -42,8 +41,8 @@ limits = [AttrLimits("Latitude",47,48), AttrLimits("Longitude", -123, -122)]
 hc.convert_out_range(limits)
 
 # 2. Load training data and denial constraints.
-hc.load_data('hospital', '../testdata/hospital.csv')
-hc.load_dcs('../testdata/hospital_constraints.txt')
+hc.load_data(ls[num][0], '../testdata/'+str(ls[num][1]))
+hc.load_dcs('../testdata/'+str(ls[num][2]))
 hc.ds.set_constraints(hc.get_dcs())
 
 # 3. Detect erroneous cells using these two detectors.
@@ -65,7 +64,7 @@ end = time.time()
 print("Time to run HoloClean: " + str(end - start))
 
 # 5. Evaluate the correctness of the results.
-hc.evaluate(fpath='../testdata/hospital_clean.csv',
+hc.evaluate(fpath='../testdata/'+str(ls[num][3]),
             tid_col='tid',
             attr_col='attribute',
             val_col='correct_val')
