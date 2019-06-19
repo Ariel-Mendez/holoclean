@@ -5,7 +5,7 @@ from detect import NullDetector, ViolationDetector, AttrLimits
 from repair.featurize import *
 import time
 
-num = 4
+num = 2
 ls = [
     ["hospital", "hospital/hospital.csv", "hospital/hospital_constraints.txt", "hospital/hospital_clean.csv", r'C:\Users\t-armen\Documents\Python Scripts\hospital\output.csv'],
     ["nyc", "dirty_data.csv", "taxi_constraints.txt", "real_trips.csv", r'C:\Users\t-armen\Documents\Python Scripts\nyc\output_trips.csv'],
@@ -38,10 +38,10 @@ hc = holoclean.HoloClean(
 
 # Flag out of range values as NaNs
 limits = [AttrLimits("Latitude",47,48), AttrLimits("Longitude", -123, -122)]
-hc.convert_out_range(limits)
 
 # 2. Load training data and denial constraints.
 hc.load_data(ls[num][0], '../testdata/'+str(ls[num][1]))
+hc.convert_out_range(limits)
 hc.load_dcs('../testdata/'+str(ls[num][2]))
 hc.ds.set_constraints(hc.get_dcs())
 
