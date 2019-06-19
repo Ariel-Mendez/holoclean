@@ -1,0 +1,3 @@
+t1&t2&EQ(t1.Latitude,t2.Latitude)&EQ(t1.Longitude,t2.Longitude)&IQ(t1.Address,t2.Address)
+t1&t2&EQ(t1.Address,t2.Address)&IQ(t1.Latitude,t2.Latitude)
+t1&t2&EQ(t1.Address,t2.Address)&IQ(t1.Longitude,t2.Longitude)
